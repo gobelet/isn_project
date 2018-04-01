@@ -17,7 +17,7 @@ def clavier(event):
     
 def clickRegles(event):
     global page
-    page = 3
+    page = 6
     
 def clickNiveaux(event):
     global page
@@ -92,9 +92,25 @@ def fifthPage():
     felictations = canvas.create_text(360, 150, text = "Felicitations ! ", font = "Arial 50 italic", fill = "DeepSkyBlue2")
     message = canvas.create_text(360, 250, text = "Vous Avez Gagné", font = "Arial 50 italic", fill = "Grey")        
     canvas.pack()
-def sixthPage():
+def sixthPage():#Règles
+    header = canvas.create_text(300, 100, text = "Règles", font = "system 70 bold", fill = "Grey")
+    but = canvas.create_text(100, 150, text = "But du jeu:", font = "Arial 20 underline", fill = "LightSkyBlue1")
+    firstPoint = canvas.create_text(320, 190, text = "* Partir de la case en haut à droite et arriver à la case " , font = "Arial 18", fill = "LightGrey")
+    endFirstPoint = canvas.create_text(137, 220, text = "en bas à gauche.", font = "Arial 18", fill = "LightGrey")
+    secondPoint = canvas.create_text(263, 250, text = "* Récupérer des clés pour ouvrir les portes.", font = "Arial 18", fill = "LightGrey")
+    comment = canvas.create_text(128, 290, text = "Comment jouer:", font = "Arial 20 underline", fill = "LightSkyBlue1")
+    thirdPoint = canvas.create_text(290, 330, text = "* Utiliser les flèches du clavier pour se déplacer. " , font = "Arial 18", fill = "LightGrey")
+    contraintes = canvas.create_text(107, 370, text = "Contraintes:", font = "Arial 20 underline", fill = "LightSkyBlue1")
+    fourthPoint = canvas.create_text(305, 410, text = "* Eviter les ennemis, les toucher fait perdre une vie." , font = "Arial 18", fill = "LightGrey")
+    fifthPoint = canvas.create_text(127, 440, text = "* Vous avez 3 vies." , font = "Arial 18", fill = "LightGrey")
+    finalPoint = canvas.create_text(310, 500, text = "Choisir niveau pour commencer le jeu !", font = "Arial 20", fill = "Grey")
+    blocNiveaux = canvas.create_rectangle(230, 540, 400, 590, fill = 'DeepSkyBlue2')
+    niveaux = canvas.create_text(310, 565 , text = "Niveaux", font = "Arial 20", fill = "LightGrey")
+    canvas.tag_bind(blocNiveaux,'<ButtonPress-1>', clickNiveaux)
+    canvas.tag_bind(niveaux,'<ButtonPress-1>', clickNiveaux)
     canvas.pack()
-def seventhPage():
+    
+def seventhPage():#chx niveaux
     canvas.pack()
 
 #---------------------------------------Boucle principale------------------------------#
