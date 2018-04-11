@@ -27,8 +27,8 @@ def trouverVoisins(etatsCases, taille, caseX, caseY) : #quand une nouvelle case 
         lVoisins.append([caseY + 1, caseX])
 
     if caseY-1 >= 0 and etatsCases[caseY - 1][caseX] == " " :
-        etatsCases[caseY][caseX + 1] = "v"
-        lVoisins.append([caseY, caseX + 1])
+        etatsCases[caseY - 1][caseX] = "v"
+        lVoisins.append([caseY - 1, caseX])
 
 def voisinHasard() : #choisi au hasard une case 'voisin' qu'on va ajouter au laby
     global lVoisins
