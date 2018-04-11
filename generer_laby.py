@@ -1,43 +1,117 @@
-from random import randint
+from random import randint 
 
-lVoisins = [[0, 1][1, 0]]
+def initialisation(taille) : 
+    lVoisins = [] 
 
-def initialiser(taille) :
-    etatsCases = [[[" "] for _ in range (taille)] for _ in range (taille)] #permet de connaitre l'etat de chaque case : 'blanche' : " ", 'voisin' : "v", ou qui fait deja partie du laby : "."
-    etatsCases[0][0] = "."
-    etatsCases[0][1], etatsCases[1][0] = "v", "v"
+    etatsCases = [[" " for _ in range (taille)] for _ in range (taille)] #permet de connaitre l'etat de chaque case : 'blanche' : " ", 'voisin' : "v", ou qui fait deja partie du laby : "." 
+    etatsCases[0][0] = "." 
 
-def trouverVoisins(etatsCases, caseX, caseY) :
+    mursVerticaux = [[1 for _ in range (taille)] for _ in range (taille)] 
+    mursHorizontaux = [[1 for _ in range (taille)] for _ in range (taille)] 
+    
+    return lVoisins, etatsCases, mursVerticaux, mursHorizontaux 
+                                    
+def trouverVoisins(etatsCases, taille, caseX, caseY) : #quand une nouvelle case est ajoutée, cette fonction aujoute à la liste de voisins les voisins de cette case 
     global lVoisins
-    if etatsCases[caseY][caseX + 1] == " " :
-        etatsCases[caseY][caseX + 1] = "v"
+
+    if caseX+1 < taille and etatsCases[caseY][caseX + 1] == " " : 
+        etatsCases[caseY][caseX + 1] = "v" 
         lVoisins.append([caseY, caseX + 1])
 
-    if etatsCases[caseY][caseX - 1] == " " :
+    if caseX-1 >= 0 and etatsCases[caseY][caseX - 1] == " " :
         etatsCases[caseY][caseX - 1] = "v"
         lVoisins.append([caseY, caseX - 1])
 
-    if etatsCases[caseY + 1][caseX] == " " :
+    if caseY+1 < taille and etatsCases[caseY + 1][caseX] == " " :
         etatsCases[caseY + 1][caseX] = "v"
         lVoisins.append([caseY + 1, caseX])
-    
-    if etatsCases[caseY][caseX + 1] == " " :
+
+    if caseY-1 >= 0 and etatsCases[caseY - 1][caseX] == " " :
         etatsCases[caseY][caseX + 1] = "v"
         lVoisins.append([caseY, caseX + 1])
 
-def voisinHasard(lVoisins) :
+def voisinHasard() : #choisi au hasard une case 'voisin' qu'on va ajouter au laby
+    global lVoisins
+
     voisin = randint(0, len(lVoisins)-1)
-    return lVoisins[voisin][0], lVoisins[voisin][1]
+    y, x = lVoisins[voisin][0], lVoisins[voisin][1]
+    del lVoisins[voisin]
+    return y, x
 
-def generer(taille) :
+def nbCheminVoisin(etatsCases, y, x) :
+    totalVoisins = 0
+    lTotalVoisins = []
+    global taille
 
+    if x < taille - 1 and etatsCases[y][x + 1] == "." :
+        totalVoisins += 1
+        lTotalVoisins.append([y, x + 1])
+    if x > 0 and etatsCases[y][x - 1] == "." :
+        totalVoisins += 1
+        lTotalVoisins.append([y, x - 1])
+    if y < taille - 1 and etatsCases[y + 1][x] == "." :
+        totalVoisins += 1
+        lTotalVoisins.append([y + 1, x])
+    if y > 0 and etatsCases[y - 1][x] == "." :
+        totalVoisins += 1
+        lTotalVoisins.append([y - 1, x])
 
-while len(lVoisins) != 0 :
+    return totalVoisins, lTotalVoisins
+
+def chemin(y, x, lTotalVoisins, totalVoisins) : #choisi un voisin appartenant à chemin à "voisin" et retourne la direction à prendre pour aller de "v" à "." et donc construire le chemin
+    if totalVoisins > 1 :
+        nb = randint(0, totalVoisins-1)
+    else :
+        nb = 0
+    if lTotalVoisins[nb][0] == y + 1 :
+        direction = "S"
+    elif lTotalVoisins[nb][0] == y - 1 :
+        direction = "N"
+    elif lTotalVoisins[nb][1] == x + 1 :
+        direction = "E"
+    elif lTotalVoisins[nb][1] == x - 1 :
+        direction = "O"
+    
+    return direction
+
+def enleverMur(direction, y, x) :
+    global mursV
+    global mursH
+    
+    if direction == "S" :
+        mursH[y][x] = 0
+    elif direction == "N" :
+        mursH[y-1][x] = 0
+    elif direction == "E" :
+        mursV[y][x] = 0
+    elif direction == "O" :
+        mursV[y][x-1] = 0
+
+def generer(taille, etatsCases) :
+    global lVoisins
+    global mursH
+    global mursV
+    trouverVoisins(etatsCases, taille, 0, 0)
+    while len(lVoisins) != 0 :
+        y, x = voisinHasard()
+        etatsCases[y][x] = "."
+        totVois, lTotVois = nbCheminVoisin(etatsCases, y, x)
+        direction = chemin(y, x, lTotVois, totVois)
+        enleverMur(direction, y, x)
+        trouverVoisins(etatsCases, taille, x, y)
+
+taille = int(input())
+lVoisins, etatsCases, mursV, mursH = initialisation(taille)
+etatsCases = generer(taille, etatsCases)
+print(mursH)
+print(mursV)
+
+"""
 partir de la case en haut à gauche
 trouver ses voisins
 prendre un voisin au pif
 boum il devient chemin --> il faut enlever un mur
-on réactualise les voisins
-(si une case voisin est adjacente à 2 ou plus cases du chemin/laby : on en prend une au pif, et du coup le chemin se fait entre ces 2 cases)
-quand y a plus de cases voisin ou de case qui fait pas partie du chemin : c est fini!!!
+on reactualise les voisins
+(si 2 cases du chemin adjacentes à 'voisin' : on en end une au îf, et du coup le chemin se fait entre ces deux cases)
+"""
 
