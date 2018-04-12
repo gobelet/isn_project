@@ -11,7 +11,7 @@ def initialisation(taille) :
     
     return lVoisins, etatsCases, mursVerticaux, mursHorizontaux 
                                     
-def trouverVoisins(etatsCases, taille, caseX, caseY) : #quand une nouvelle case est ajoutée, cette fonction aujoute à la liste de voisins les voisins de cette case 
+def trouverVoisins(etatsCases, taille, caseX, caseY) : #quand une nouvelle case est ajoutée, cette fonction ajoute à la liste de voisins les voisins de cette case 
     global lVoisins
 
     if caseX+1 < taille and etatsCases[caseY][caseX + 1] == " " : 
@@ -83,9 +83,9 @@ def enleverMur(direction, y, x) :
     elif direction == "N" :
         mursH[y-1][x] = 0
     elif direction == "E" :
-        mursV[y][x] = 0
+        mursV[x][y] = 0
     elif direction == "O" :
-        mursV[y][x-1] = 0
+        mursV[x-1][y] = 0
 
 def generer(taille, etatsCases) :
     global lVoisins
