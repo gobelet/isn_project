@@ -1,8 +1,8 @@
-from tkinter import * 
+from tkinter import *
 #-------------------------------Initialisation--------------------------------#
 fenetre = Tk()
 page = 1
-currentPage = 0
+currentPage = 0 
 #Interface Base
 def base():
     global canvas
@@ -10,6 +10,49 @@ def base():
 def presentation():
     global bloc
     bloc = canvas.create_rectangle(20, 20, 620, 620, fill = 'White')
+#Cartes
+murHaut=[[1] * 10,
+       [1,1,1,0,0,1,1,1,0,1],
+       [0,1,1,0,1,0,0,1,1,0],
+       [0,0,0,1,1,1,1,1,1,0],
+       [0,0,0,1,0,1,1,0,0,0],
+       [0,1,1,0,1,1,0,0,0,0],
+       [0] * 10,
+       [0,0,0,1,0,0,1,1,0,0],
+       [1] * 10]
+
+murGauche=[[1] * 8,
+         [0,0,1,1,0,1,1,0],
+         [0,0,0,1,1,0,1,1],
+         [0,1,1,0,0,1,1,0],
+         [1,1,0,0,0,1,1,0],
+         [0,0,0,0,0,0,1,1],
+         [0,1,1,0,0,1,1,0],
+         [0,0,0,0,1,1,0,0],
+         [0,0,0,1,1,1,1,0],
+         [0,0,1,0,1,1,1,1],
+         [1] * 8]
+#-----------------------------Fonctions Dessin--------------------------#
+def dessinCarteHaut (murHaut):
+    vertical = len(murHaut)
+    horizontal = len(murHaut[0])
+    for i in range (vertical):
+         for j in range (horizontal):
+            if murHaut[i][j] == 1:
+                refTopx = j * 60 + 20
+                refTopy = i * 60 + 20
+                murTop = canvas.create_rectangle(refTopx , refTopy, refTopx + 60 , refTopy + 1, fill = 'Grey')
+
+def dessinCarteGauche (murGauche):
+    vertical = len(murGauche)
+    horizontal = len(murGauche[0])
+    for i in range (vertical):
+        for j in range (horizontal):
+            if murGauche[i][j] == 1:
+                refLeftx = i * 60 + 20
+                refLefty = j * 60 + 20
+                murLeft = canvas.create_rectangle(refLeftx, refLefty, refLeftx + 1 , refLefty + 60, fill = 'Grey')
+
 #-----------------------------Fonctions Evenementiels--------------------------#
 def clavier(event):
     global page
@@ -22,6 +65,10 @@ def clickRegles(event):
 def clickNiveaux(event):
     global page
     page = 7
+
+def clickContinuer(event):
+    global page
+    page = 3
     
 def deleteCanvas():
     canvas.delete(*canvas.find_all())
@@ -74,6 +121,12 @@ def secondPage():
     canvas.tag_bind(niveaux,'<ButtonPress-1>', clickNiveaux)
     canvas.pack()
 def thirdPage():
+    global murTop
+    global murLeft
+#Affichage du labyrinthe
+    dessinCarteHaut(murHaut)
+    dessinCarteGauche(murGauche)
+#Mouvement et affichage du bloc
     global pos
     global perso
     pos = (20,20)
@@ -87,7 +140,6 @@ def fourthPage():
     continuer = canvas.create_text(360, 175, text = "Continuer", font = "Arial 19", fill = "Grey")
     recommencer = canvas.create_text(364, 255 , text = "Recommencer", font = "Arial 19", fill = "Grey")
     canvas.pack()
-    
 def fifthPage():
     felictations = canvas.create_text(360, 150, text = "Felicitations ! ", font = "Arial 50 italic", fill = "DeepSkyBlue2")
     message = canvas.create_text(360, 250, text = "Vous Avez Gagné", font = "Arial 50 italic", fill = "Grey")        
@@ -111,6 +163,12 @@ def sixthPage():#Règles
     canvas.pack()
     
 def seventhPage():#chx niveaux
+    blocNiveaux1 = canvas.create_rectangle(230, 540, 400, 590, fill = 'DeepSkyBlue2')
+    niveaux1 = canvas.create_text(310, 565 , text = "Niveau 1", font = "Arial 20", fill = "LightGrey")
+    blocCommencer = canvas.create_rectangle(230, 540, 400, 590, fill = 'DeepSkyBlue2')
+    commencer = canvas.create_text(170, 355 , text = "Commencer", font = "Arial 20", fill = "LightGrey")
+    canvas.tag_bind(blocCommencer,'<ButtonPress-1>', clickContinuer)
+    canvas.tag_bind(commencer,'<ButtonPress-1>', clickContinuer)
     canvas.pack()
 
 #---------------------------------------Boucle principale------------------------------#
