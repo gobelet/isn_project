@@ -52,27 +52,27 @@ def dessinCarteGauche(mursV):
 def clavier(event):
     global page
     page = 2
+    pageManagement(page)
 
 
 def clickRegles(event):
     global page
     page = 6
-
+    pageManagement(page)
 
 def clickNiveaux(event):
     global page
     page = 7
-
+    pageManagement(page)
 
 def clickContinuer(event):
     global page
     page = 3
-
+    pageManagement(page)
 
 def clickUnpause(event):
     global page
     pausedPage
-
 
 def pausedPage():
     global page
@@ -85,8 +85,14 @@ def deleteCanvas():
 def move(event):
     global pos
     global page
+    global attraper
     press = event.keysym
-    if press == "Up":
+    de = 0
+    if press == "space":
+        page = 4
+        pausedPage = thirdPage(attraper)
+        pageManagement(page)
+    elif press == "Up":
         de = 1
     elif press == "Down":
         de = 2
@@ -98,9 +104,6 @@ def move(event):
     if avancer:
         pos = (pos[0]+direction[0], pos[1]+direction[1])
         canvas.coords(perso, pos[0], pos[1], pos[0]+40, pos[1]+40)
-    elif press == "space":
-        page = 4
-        pausedPage = thirdPage()
 
 
 # -----------------------Collisions----------------------- #
@@ -111,19 +114,21 @@ def avance(pos, de):
     y = (pos[1] - 25) // 50
     avancer = True
 
-    if de == 1:
+    if de == 0 :
+        return False, 0
+    elif de == 1:
         direction = (0, -50)
         if y == 0 or mursH[y-1][x] == 1:
             avancer = False
-    if de == 2:
+    elif de == 2:
         direction = (0, 50)
         if y == taille-1 or mursH[y][x] == 1:
             avancer = False
-    if de == 3:
+    elif de == 3:
         direction = (-50, 0)
         if x == 0 or mursV[y][x-1] == 1:
             avancer = False
-    if de == 4:
+    elif de == 4:
         direction = (50, 0)
         if x == taille-1 or mursV[y][x] == 1:
             avancer = False
@@ -177,6 +182,7 @@ def ennemis():
     # PERDRE
     if collisionPersonnage(pos, posNmi):
         page = 8
+        pageManagement(page)
     canvas.after(500, ennemis)
 
 
@@ -186,12 +192,13 @@ def ennemis():
 def pageManagement(page):
     deleteCanvas()
     presentation()
+    global attraper
     if page == 1:
         firstPage()
     if page == 2:
         secondPage()
     if page == 3:
-        thirdPage()
+        thirdPage(attraper)
     if page == 4:
         fourthPage()
     if page == 5:
@@ -267,6 +274,7 @@ def thirdPage(attraper):
     if attraper == 1:
         if collisionDoor(posCentreX, posCentreY, posDoor):
             page = 5
+            pageManagement(page)
     canvas.focus_set()
     canvas.bind_all("<Key>", move)
     canvas.pack()
@@ -362,15 +370,16 @@ def eighthPage():
 
 # ----------------------Boucle principale----------------------- #
 
-
+"""
 def update():
     global currentPage
     if page != currentPage:
         pageManagement(page)
         currentPage = page
     canvas.after(20, update)
-
+"""
 
 base()
-update()
+pageManagement(page)
+"""update()"""
 fenetre.mainloop()
