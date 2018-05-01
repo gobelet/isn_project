@@ -183,6 +183,7 @@ def ennemis():
     if collisionPersonnage(pos, posNmi):
         page = 8
         pageManagement(page)
+
     canvas.after(500, ennemis)
 
 
@@ -382,4 +383,4 @@ def update():
 base()
 pageManagement(page)
 """update()"""
-fenetre.mainloop()
+canvas.mainloop()
