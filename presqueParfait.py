@@ -50,6 +50,8 @@ def clickContinuer(event):
 def clickUnpause(event):
     global page
     pausedPage
+def pausedPage():
+    global page
 def deleteCanvas():
     canvas.delete(*canvas.find_all())
 def move(event):
@@ -96,7 +98,32 @@ def avance(pos, de):
             avancer = False
 
     return avancer, direction
-        
+
+def collisionPersonnage(pos, posNmi):
+    global posCentreX
+    global posCentreY
+    posCentreX = pos[0]+ 20
+    posCentreY = pos[1]+ 20
+    posNmiCentreX = posNmi[0]+ 20 
+    posNmiCentreY = posNmi[1]+ 20
+    separationX = abs(posCentreX - posNmiCentreX)
+    separationY = abs(posCentreY - posNmiCentreY)
+    if separationX < 20 and separationY < 20:
+        return True
+def collisionClef(posCentreX, posCentreY, posClef):
+    posClefCentreX = posClef[0] + 20
+    posClefCentreY = posClef[1] + 10
+    separationX = abs(posCentreX - posClefCentreX)
+    separationY = abs(posCentreY - posClefCentreY)
+    if separationX < 20 and separationY < 10:
+        return True
+def collisionDoor(posCentreX, posCentreY, posDoor):
+    posDoorCentreX = posClef[0] + 13
+    posDoorCentreY = posClef[1] + 20
+    separationX = abs(posCentreX - posDoorCentreX)
+    separationY = abs(posCentreY - posDoorCentreY)
+    if separationX < 13 and separationY < 20:
+        return True
 #-----------------------------Ennemis------------------------------------------#
 def ennemis():
     global posNmi
@@ -106,6 +133,9 @@ def ennemis():
     if avancer:
         posNmi = (posNmi[0] + direction[0], posNmi[1] + direction[1])
         canvas.coords(Nmi, posNmi[0], posNmi[1], posNmi[0]+40, posNmi[1]+40)
+    #PERDRE
+    if collisionPersonnage(pos, posNmi) == True:
+        page = 8
     canvas.after(500, ennemis)
 
 
@@ -127,6 +157,8 @@ def pageManagement(page):
         sixthPage()
     if page == 7:
         seventhPage()
+    if page == 8:
+        eighthPage()
         
 def firstPage():
     gameName = canvas.create_text(310, 250, text = "Labyrinthe", font = "Arial 50 italic", fill = "Grey")
@@ -144,11 +176,12 @@ def secondPage():
     canvas.tag_bind(blocNiveaux,'<ButtonPress-1>', clickNiveaux)
     canvas.tag_bind(niveaux,'<ButtonPress-1>', clickNiveaux)
     canvas.pack()
-def thirdPage():
+def thirdPage(attraper):
 #Affichage du labyrinthe
     dessinCarteHaut(mursH)
     dessinCarteGauche(mursV)
 #Mouvement et affichage du bloc
+    global page
     global perso
     global Nmi
     global posNmi
@@ -159,11 +192,21 @@ def thirdPage():
     coordAleay = randint(0, 11)
     coordClefx = (coordAleax * 50) + 23
     coordClefy = (coordAleay * 50) + 23
+    posClef = (coordClefx, coordClefy)
     clef = canvas.create_rectangle(coordClefx , coordClefy , coordClefx + 40, coordClefy + 20, fill = 'Gold')
-    door = canvas.create_rectangle(580, 575, 605, 615, fill = 'Brown')
+    posDoor = (580, 575)
+    door = canvas.create_rectangle(580, 575, 606, 615, fill = 'Brown')
     pos = (25, 25)
     perso = canvas.create_rectangle(25, 25, 65, 65, fill = 'DeepSkyBlue2')
     ennemis()
+#GAGNER
+    if collisionClef(posCentreX, posCentreY, posClef) == True:
+        attraper = 1
+        canvas.coords(clef, 1000, 1000, 1000, 1000)
+        print("bla")
+    if attraper == 1:
+        if  collisionDoor(posCentreX, posCentreY, posDoor)== True:
+            page = 5
     canvas.focus_set()
     canvas.bind_all("<Key>", move)
     canvas.pack()
@@ -207,6 +250,9 @@ def seventhPage():#chx niveaux
     canvas.tag_bind(blocCommencer,'<ButtonPress-1>', clickContinuer)
     canvas.tag_bind(commencer,'<ButtonPress-1>', clickContinuer)
     canvas.pack()
+
+def eighthPage():
+    niveaux1 = canvas.create_text(310, 565 , text = "PERDU !", font = "Arial 80", fill = "LightGrey")
 
 #---------------------------------------Boucle principale------------------------------#
 def update():
