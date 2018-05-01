@@ -1,9 +1,11 @@
 from tkinter import *
 from generer_laby import *
+import time
+
 #-------------------------------Initialisation--------------------------------#
 fenetre = Tk()
 page = 1
-currentPage = 0 
+currentPage = 0
 #Interface Base
 def base():
     global canvas
@@ -11,59 +13,124 @@ def base():
 def presentation():
     global bloc
     bloc = canvas.create_rectangle(20, 20, 620, 620, fill = 'White')
+
+
 #-----------------------------Fonctions Dessin--------------------------#
 def dessinCarteHaut (mursH):
-    vertical = len(mursH)
-    horizontal = len(mursH[0])
-    for i in range (vertical):
-         for j in range (horizontal):
+    for i in range (taille):
+         for j in range (taille):
             if mursH[i][j] == 1:
-                refTopx = j * 60 + 20
-                refTopy = i * 60 + 20
-                murTop = canvas.create_rectangle(refTopx , refTopy, refTopx + 60 , refTopy + 1, fill = 'Grey')
-
-def dessinCarteGauche (mursV):
-    vertical = len(mursV)
-    horizontal = len(mursV[0])
-    for i in range (vertical):
-        for j in range (horizontal):
+                refTopx = j * 50 + 20
+                refTopy = (i+1) * 50 + 20
+                murTop = canvas.create_rectangle(refTopx , refTopy, refTopx + 50 , refTopy + 1, fill = 'Grey')
+    murTop = canvas.create_rectangle(20, 20, 620, 20, fill = 'Grey')
+def dessinCarteGauche (mursV) :
+    for i in range (taille):
+        for j in range (taille):
             if mursV[i][j] == 1:
-                refLeftx = i * 60 + 20
-                refLefty = j * 60 + 20
-                murLeft = canvas.create_rectangle(refLeftx, refLefty, refLeftx + 1 , refLefty + 60, fill = 'Grey')
-
+                refLeftx = (j+1) * 50 + 20
+                refLefty = i * 50 + 20
+                murLeft = canvas.create_rectangle(refLeftx , refLefty, refLeftx + 1 , refLefty + 50, fill = 'Grey')
+    murLeft = canvas.create_rectangle(20, 20, 20, 620, fill = 'Grey')
+  
 #-----------------------------Fonctions Evenementiels--------------------------#
 def clavier(event):
     global page
-    page = 2
-    
+    page = 2  
 def clickRegles(event):
     global page
     page = 6
-    
 def clickNiveaux(event):
     global page
     page = 7
-
 def clickContinuer(event):
     global page
     page = 3
-    
+def clickUnpause(event):
+    global page
+    pausedPage
 def deleteCanvas():
     canvas.delete(*canvas.find_all())
-    
 def move(event):
     global pos
+    global page
     press = event.keysym
     if press == "Up":
-        pos = (pos[0], pos[1] - 10)            
+        pos = (pos[0], pos[1] - 10)
+        if collisionMurs(pos) == True:
+            pos = (pos[0], pos[1] + 10)
     elif press == "Down":
         pos = (pos[0], pos[1] + 10)
+        if collisionMurs(pos) == True:
+            pos = (pos[0], pos[1] - 10)
     elif press == "Right":
         pos = (pos[0] + 10, pos[1])
+        if collisionMurs(pos) == True:
+            pos = (pos[0] - 10, pos[1])
     elif press == "Left":
-        pos = (pos[0] -10, pos[1])
-    canvas.coords(perso, pos[0], pos[1], pos[0]+25, pos[1]+25)
+        pos = (pos[0] - 10, pos[1])
+        if collisionMurs(pos) == True:
+            pos = (pos[0] + 10, pos[1])
+    elif press == "space":
+        page = 4
+        pausedPage = thirdPage()
+    #collisionMurs(perso)
+    canvas.coords(perso, pos[0], pos[1], pos[0]+40, pos[1]+40)
+
+#----------------------------------Collisions---------------------------------#
+def collisionMurs (pos):
+    global overlap
+    overlap = canvas.find_overlapping(pos[0], pos[1], pos[0] + 40, pos[1] + 40)
+    if len(overlap) >= 3:
+        print(overlap)
+        return True
+    else:
+        return False
+        
+#-----------------------------Ennemis------------------------------------------#
+def ennemis():
+    global posNmi
+    de = randint(1,4)
+    distance = randint(3, 8)
+    """if de == 1:
+        direction = (0, -10)
+    if de == 2:
+        direction = (0, 10)
+    if de == 3:
+        direction = (10, 0)
+    if de == 4:
+        direction = (-10, 0)
+    for loop in range (distance):
+        posNmi = (posNmi[0] + direction[0], posNmi[1] + direction[1])
+        if collisionMurs(posNmi)== True:
+            posNmi = (posNmi[0] - direction[0], posNmi[1] - direction[1])"""
+    x = (posNmi[0]-25)//50
+    y = (posNmi[1]-25)//50
+    avancer = True
+    if de == 1:
+        direction = (0, -50)
+        if y > 0 and mursH[y-1][x] == 1 :
+            avancer = False
+    if de == 2:
+        direction = (0, 50)
+        if y < taille+1 and mursH[y][x] == 1  :
+            avancer = False
+    if de == 3:
+        direction = (50, 0)
+        if x < taille+1 and mursH[y][x] == 1:
+            avancer = False
+    if de == 4:
+        direction = (-50, 0)
+        if  x > 0 and mursH[y][x-1] == 1:
+            avancer = False
+    if avancer : 
+        posNmi = (posNmi[0] + direction[0], posNmi[1] + direction[1])
+    
+    canvas.coords(Nmi, posNmi[0], posNmi[1], posNmi[0]+40, posNmi[1]+40)
+    canvas.after(30, ennemis)
+
+        
+
 #-------------------------------------Pages-----------------------------------#
 def pageManagement(page):
     deleteCanvas()
@@ -75,7 +142,7 @@ def pageManagement(page):
     if page == 3:
         thirdPage()
     if page == 4:
-        fouthPage()
+        fourthPage()
     if page == 5:
         fifthPage()
     if page == 6:
@@ -87,7 +154,7 @@ def firstPage():
     gameName = canvas.create_text(310, 250, text = "Labyrinthe", font = "Arial 50 italic", fill = "Grey")
     ourNames = canvas.create_text(310, 330 , text = "Gwen & Mélo", font = "Arial 30", fill = "LightSkyBlue1")
     commande = canvas.create_text(310, 420 , text = "Appuyer sur 'Entrée' pour continuer ", font = "Arial 16", fill = "Grey")
-    canvas.bind_all('<Return>', clavier)
+    canvas.bind_all("<Return>", clavier)
     canvas.pack()
 def secondPage():
     blocRegles = canvas.create_rectangle(230, 235, 400, 285, fill = 'DeepSkyBlue2')
@@ -101,25 +168,40 @@ def secondPage():
     canvas.pack()
 def thirdPage():
 #Affichage du labyrinthe
-    dessinCarteHaut(mursV)
-    dessinCarteGauche(mursH)
+    dessinCarteHaut(mursH)
+    dessinCarteGauche(mursV)
 #Mouvement et affichage du bloc
-    global pos
     global perso
-    pos = (20,20)
-    perso = canvas.create_rectangle(20,20,45,45,fill="violet")
+    global Nmi
+    global posNmi
+    global pos
+    posNmi = (525, 425)
+    Nmi = canvas.create_rectangle(525, 425, 565, 465, fill = 'Red')
+    coordAleax = randint(0, 11)
+    coordAleay = randint(0, 11)
+    coordClefx = (coordAleax * 50) + 23
+    coordClefy = (coordAleay * 50) + 23
+    clef = canvas.create_rectangle(coordClefx , coordClefy , coordClefx + 40, coordClefy + 20, fill = 'Gold')
+    door = canvas.create_rectangle(580, 575, 605, 615, fill = 'Brown')
+    pos = (25, 25)
+    perso = canvas.create_rectangle(25, 25, 65, 65, fill = 'DeepSkyBlue2')
+    ennemis()
     canvas.focus_set()
-    canvas.bind("<Key>", move)
+    canvas.bind_all("<Key>", move)
     canvas.pack()
 def fourthPage():
-    blocPause = canvas.create_rectangle(280, 150, 450, 200, fill = 'DeepSkyBlue2')
-    blocRecommencer = canvas.create_rectangle(280, 230, 450, 280, fill = 'DeepSkyBlue2')
-    continuer = canvas.create_text(360, 175, text = "Continuer", font = "Arial 19", fill = "Grey")
-    recommencer = canvas.create_text(364, 255 , text = "Recommencer", font = "Arial 19", fill = "Grey")
+    blocContinuer = canvas.create_rectangle(230, 235, 400, 280, fill = 'DeepSkyBlue2')
+    blocRecommencer = canvas.create_rectangle(230, 315, 400, 365, fill = 'DeepSkyBlue2')
+    continuer = canvas.create_text(310, 260, text = "Continuer", font = "Arial 19", fill = "Grey")
+    recommencer = canvas.create_text(314, 340 , text = "Recommencer", font = "Arial 19", fill = "Grey")
+    canvas.tag_bind(blocContinuer,'<ButtonPress-1>', clickContinuer)
+    canvas.tag_bind(continuer,'<ButtonPress-1>', clickContinuer)
+    canvas.tag_bind(blocRecommencer,'<ButtonPress-1>', clickNiveaux)
+    canvas.tag_bind(recommencer,'<ButtonPress-1>', clickNiveaux)
     canvas.pack()
 def fifthPage():
-    felictations = canvas.create_text(360, 150, text = "Felicitations ! ", font = "Arial 50 italic", fill = "DeepSkyBlue2")
-    message = canvas.create_text(360, 250, text = "Vous Avez Gagné", font = "Arial 50 italic", fill = "Grey")        
+    felicitations = canvas.create_text(320, 250, text = "Felicitations ! ", font = "Arial 50 italic", fill = "DeepSkyBlue2")
+    message = canvas.create_text(320, 400, text = "Vous Avez Gagné", font = "Arial 50 italic", fill = "Grey")        
     canvas.pack()
 def sixthPage():#Règles
     header = canvas.create_text(300, 100, text = "Règles", font = "system 70 bold", fill = "Grey")
@@ -143,7 +225,7 @@ def seventhPage():#chx niveaux
     blocNiveaux1 = canvas.create_rectangle(230, 540, 400, 590, fill = 'DeepSkyBlue2')
     niveaux1 = canvas.create_text(310, 565 , text = "Niveau 1", font = "Arial 20", fill = "LightGrey")
     blocCommencer = canvas.create_rectangle(230, 540, 400, 590, fill = 'DeepSkyBlue2')
-    commencer = canvas.create_text(170, 355 , text = "Commencer", font = "Arial 20", fill = "LightGrey")
+    commencer = canvas.create_text(315, 565 , text = "Commencer", font = "Arial 20", fill = "LightGrey")
     canvas.tag_bind(blocCommencer,'<ButtonPress-1>', clickContinuer)
     canvas.tag_bind(commencer,'<ButtonPress-1>', clickContinuer)
     canvas.pack()
@@ -154,10 +236,13 @@ def update():
     if page != currentPage:
         pageManagement(page)
         currentPage = page
-    canvas.after(15, update)
+    canvas.after(20, update)
 
 
 
 
 base()
 update()
+canvas.mainloop()
+
+
