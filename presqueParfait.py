@@ -359,9 +359,25 @@ def sixthPage():  # Règles
 
 
 def seventhPage():  # choix niveaux
-    blocNiveaux1 = canvas.create_rectangle(230, 540, 400, 590,
+    global niveau
+    choix = canvas.create_text(310, 120,
+                                text="Choisir un niveau pour commencer le jeu !",
+                                font="Arial 20", fill="Grey")
+    blocNiveaux1 = canvas.create_rectangle(120, 200, 290, 250,
                                            fill="DeepSkyBlue2")
-    niveaux1 = canvas.create_text(310, 565, text="Niveau 1",
+    niveaux1 = canvas.create_text(205, 225, text="Niveau 1",
+                                  font="Arial 20", fill="LightGrey")
+    blocNiveau2 = canvas.create_rectangle(340, 200, 510, 250,
+                                            fill="DeepSkyBlue2")
+    niveaux2 = canvas.create_text(425, 225, text="Niveau 2",
+                                  font="Arial 20", fill="LightGrey")
+    blocNiveau3 = canvas.create_rectangle(120, 280, 290, 330,
+                                            fill="DeepSkyBlue2")
+    niveaux3 = canvas.create_text(205, 305, text="Niveau 3",
+                                  font="Arial 20", fill="LightGrey")
+    blocNiveau4 = canvas.create_rectangle(340, 280, 510, 330,
+                                            fill="DeepSkyBlue2")
+    niveaux4 = canvas.create_text(425, 305, text="Niveau 4",
                                   font="Arial 20", fill="LightGrey")
     blocCommencer = canvas.create_rectangle(230, 540, 400, 590,
                                             fill="DeepSkyBlue2")
