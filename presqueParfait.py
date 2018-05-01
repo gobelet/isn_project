@@ -90,44 +90,33 @@ def collisionMurs (pos):
 #-----------------------------Ennemis------------------------------------------#
 def ennemis():
     global posNmi
-    de = randint(1,4)
-    distance = randint(3, 8)
-    """if de == 1:
-        direction = (0, -10)
-    if de == 2:
-        direction = (0, 10)
-    if de == 3:
-        direction = (10, 0)
-    if de == 4:
-        direction = (-10, 0)
-    for loop in range (distance):
-        posNmi = (posNmi[0] + direction[0], posNmi[1] + direction[1])
-        if collisionMurs(posNmi)== True:
-            posNmi = (posNmi[0] - direction[0], posNmi[1] - direction[1])"""
+    de = randint(1, 4)
+    distance = randint(1, 3)
     x = (posNmi[0]-25)//50
     y = (posNmi[1]-25)//50
     avancer = True
+
     if de == 1:
         direction = (0, -50)
-        if y > 0 and mursH[y-1][x] == 1 :
+        if y == 0 or mursH[y-1][x] == 1:
             avancer = False
     if de == 2:
         direction = (0, 50)
-        if y < taille+1 and mursH[y][x] == 1  :
+        if y == taille-1 or mursH[y][x] == 1:
             avancer = False
     if de == 3:
         direction = (50, 0)
-        if x < taille+1 and mursH[y][x] == 1:
+        if x == taille-1 or mursV[y][x] == 1:
             avancer = False
     if de == 4:
         direction = (-50, 0)
-        if  x > 0 and mursH[y][x-1] == 1:
+        if x == 0 or mursV[y][x-1] == 1:
             avancer = False
-    if avancer : 
+
+    if avancer:
         posNmi = (posNmi[0] + direction[0], posNmi[1] + direction[1])
-    
-    canvas.coords(Nmi, posNmi[0], posNmi[1], posNmi[0]+40, posNmi[1]+40)
-    canvas.after(30, ennemis)
+        canvas.coords(Nmi, posNmi[0], posNmi[1], posNmi[0]+40, posNmi[1]+40)
+    canvas.after(500, ennemis)
 
         
 
