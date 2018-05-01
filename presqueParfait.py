@@ -313,40 +313,42 @@ def fifthPage():
 
 
 def sixthPage():  # Règles
-    header = canvas.create_text(300, 100, text="Règles",
+    header = canvas.create_text(320, 75, text="Règles",
                                 font="system 70 bold", fill="Grey")
     but = canvas.create_text(100, 150, text="But du jeu:",
                              font="Arial 20 underline", fill="LightSkyBlue1")
-    firstPoint = canvas.create_text(320, 190,
-                                    text="* Partir de la case en haut à droite \
-                                    et arriver à la case",
-                                    font="Arial 18", fill="LightGrey")
-    endFirstPoint = canvas.create_text(137, 220, text="en bas à gauche.",
-                                       font="Arial 18", fill="LightGrey")
-    secondPoint = canvas.create_text(263, 250,
-                                     text="* Récupérer des clés pour ouvrir \
-                                     les portes.",
-                                     font="Arial 18", fill="LightGrey")
+    firstPoint = canvas.create_text(230, 190,
+                                text="* Aller jusqu'à la porte en bas à droite.",
+                                font="Arial 18", fill="LightGrey")
+    secondPoint = canvas.create_text(263, 220,
+                                text="* Récupérer la(-es) clé(s) pour ouvrir la porte",
+                                font="Arial 18", fill="LightGrey")
+    presentationPerso = canvas.create_text(297, 250,
+            text="* Perso =          Ennemi =          Clé =          Porte =",
+                                font="Arial 18",
+                                fill="LightGrey")
+    perso = canvas.create_rectangle(130, 235, 160, 265, fill="DeepSkyBlue2")
+    ennemi = canvas.create_rectangle(310, 235, 340, 265, fill="Red")
+    clef = canvas.create_rectangle(440, 245, 480, 260, fill="Gold")
+    porte = canvas.create_rectangle(580, 235, 605, 275, fill="Brown")
     comment = canvas.create_text(128, 290, text="Comment jouer:",
-                                 font="Arial 20 underline",
-                                 fill="LightSkyBlue1")
-    thirdPoint = canvas.create_text(290, 330,
-                                    text="* Utiliser les flèches du clavier \
-                                    pour se déplacer. ",
-                                    font="Arial 18", fill="LightGrey")
-    contraintes = canvas.create_text(107, 370, text="Contraintes:",
-                                     font="Arial 20 underline",
-                                     fill="LightSkyBlue1")
-    fourthPoint = canvas.create_text(305, 410,
-                                     text="* Eviter les ennemis, les toucher \
-                                     fait perdre une vie.",
-                                     font="Arial 18", fill="LightGrey")
-    fifthPoint = canvas.create_text(127, 440, text="* Vous avez 3 vies.",
-                                    font="Arial 18", fill="LightGrey")
+                                font="Arial 20 underline",
+                                fill="LightSkyBlue1")
+    thirdPoint = canvas.create_text(252, 330,
+                                text="* Se déplacer grâce aux flèches du clavier ",
+                                font="Arial 18", fill="LightGrey")
+    autres = canvas.create_text(75, 370, text="Autres:",
+                                font="Arial 20 underline",
+                                fill="LightSkyBlue1")
+    fourthPoint = canvas.create_text(161, 410,
+                                text="* Il faut éviter les ennemis",
+                                font="Arial 18", fill="LightGrey")
+    fifthPoint = canvas.create_text(193, 440,
+                                text="* Espace permet de faire Pause",
+                                font="Arial 18", fill="LightGrey")
     finalPoint = canvas.create_text(310, 500,
-                                    text="Choisir niveau pour commencer le \
-                                    jeu !",
-                                    font="Arial 20", fill="Grey")
+                                text="Choisir niveau pour commencer le jeu !",
+                                font="Arial 20", fill="Grey")
     blocNiveaux = canvas.create_rectangle(230, 540, 400, 590,
                                           fill="DeepSkyBlue2")
     niveaux = canvas.create_text(310, 565, text="Niveaux",
