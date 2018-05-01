@@ -90,7 +90,7 @@ def move(event):
     de = 0
     if press == "space":
         page = 4
-        pausedPage = thirdPage(attraper)
+        pausedPage = thirdPage()
         pageManagement(page)
     elif press == "Up":
         de = 1
@@ -192,7 +192,7 @@ def gagner():
     global attraper
     if collisionClef(posCentreX, posCentreY, posClef) == True:
         attraper = 1
-        canvas.coords(clef, 1000, 1000, 1000, 1000)
+        canvas.delete(clef)
     if attraper == 1:
         if collisionDoor(posCentreX, posCentreY, posDoor) == True:
             page = 5
