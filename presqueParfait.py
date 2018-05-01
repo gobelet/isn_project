@@ -162,8 +162,8 @@ def collisionClef(posCentreX, posCentreY, posClef):
 
 
 def collisionDoor(posCentreX, posCentreY, posDoor):
-    posDoorCentreX = posClef[0] + 13
-    posDoorCentreY = posClef[1] + 20
+    posDoorCentreX = posDoor[0] + 13
+    posDoorCentreY = posDoor[1] + 20
     separationX = abs(posCentreX-posDoorCentreX)
     separationY = abs(posCentreY-posDoorCentreY)
     if separationX < 13 and separationY < 20:
@@ -390,4 +390,3 @@ base()
 pageManagement(page)
 """update()"""
 fenetre.mainloop()
-
