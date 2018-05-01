@@ -103,7 +103,7 @@ def move(event):
     avancer, direction = avance(pos, de)
     if avancer:
         pos = (pos[0]+direction[0], pos[1]+direction[1])
-        canvas.coords(perso, pos[0], pos[1], pos[0]+40, pos[1]+40)
+        canvas.coords(perso, pos[0], pos[1], pos[0]+40, pos[1]+40)   
 
 
 # -----------------------Collisions----------------------- #
@@ -147,6 +147,8 @@ def collisionPersonnage(pos, posNmi):
     separationY = abs(posCentreY-posNmiCentreY)
     if separationX < 20 and separationY < 20:
         return True
+    
+    
 
 
 def collisionClef(posCentreX, posCentreY, posClef):
@@ -154,8 +156,9 @@ def collisionClef(posCentreX, posCentreY, posClef):
     posClefCentreY = posClef[1] + 10
     separationX = abs(posCentreX-posClefCentreX)
     separationY = abs(posCentreY-posClefCentreY)
-    if separationX < 20 and separationY < 10:
+    if separationX < 25 and separationY < 15:
         return True
+    
 
 
 def collisionDoor(posCentreX, posCentreY, posDoor):
@@ -183,8 +186,18 @@ def ennemis():
     if collisionPersonnage(pos, posNmi):
         page = 8
         pageManagement(page)
-
     canvas.after(500, ennemis)
+
+def gagner():
+    global attraper
+    if collisionClef(posCentreX, posCentreY, posClef) == True:
+        attraper = 1
+        canvas.coords(clef, 1000, 1000, 1000, 1000)
+    if attraper == 1:
+        if collisionDoor(posCentreX, posCentreY, posDoor) == True:
+            page = 5
+            pageManagement(page)
+    canvas.after(15, gagner)
 
 
 # -----------------------Pages----------------------- #
@@ -193,13 +206,12 @@ def ennemis():
 def pageManagement(page):
     deleteCanvas()
     presentation()
-    global attraper
     if page == 1:
         firstPage()
     if page == 2:
         secondPage()
     if page == 3:
-        thirdPage(attraper)
+        thirdPage()
     if page == 4:
         fourthPage()
     if page == 5:
@@ -240,7 +252,7 @@ def secondPage():
     canvas.pack()
 
 
-def thirdPage(attraper):
+def thirdPage():
     # Affichage du labyrinthe
     dessinCarteHaut(mursH)
     dessinCarteGauche(mursV)
@@ -250,7 +262,10 @@ def thirdPage(attraper):
     global perso
     global Nmi
     global posNmi
+    global posClef
+    global posDoor
     global pos
+    global clef
     posNmi = (525, 425)
     Nmi = canvas.create_rectangle(525, 425, 565, 465, fill="Red")
     coordAleax = randint(0, 11)
@@ -266,16 +281,7 @@ def thirdPage(attraper):
     pos = (25, 25)
     perso = canvas.create_rectangle(25, 25, 65, 65, fill="DeepSkyBlue2")
     ennemis()
-
-    # GAGNER
-    if collisionClef(posCentreX, posCentreY, posClef):
-        attraper = 1
-        canvas.coords(clef, 1000, 1000, 1000, 1000)
-        print("bla")
-    if attraper == 1:
-        if collisionDoor(posCentreX, posCentreY, posDoor):
-            page = 5
-            pageManagement(page)
+    gagner()
     canvas.focus_set()
     canvas.bind_all("<Key>", move)
     canvas.pack()
@@ -383,4 +389,5 @@ def update():
 base()
 pageManagement(page)
 """update()"""
-canvas.mainloop()
+fenetre.mainloop()
+
