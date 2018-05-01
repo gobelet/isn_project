@@ -6,6 +6,7 @@ import time
 fenetre = Tk()
 page = 1
 currentPage = 0
+attraper = 0
 #Interface Base
 def base():
     global canvas
@@ -56,44 +57,25 @@ def move(event):
     global page
     press = event.keysym
     if press == "Up":
-        pos = (pos[0], pos[1] - 10)
-        if collisionMurs(pos) == True:
-            pos = (pos[0], pos[1] + 10)
+        de = 1
     elif press == "Down":
-        pos = (pos[0], pos[1] + 10)
-        if collisionMurs(pos) == True:
-            pos = (pos[0], pos[1] - 10)
-    elif press == "Right":
-        pos = (pos[0] + 10, pos[1])
-        if collisionMurs(pos) == True:
-            pos = (pos[0] - 10, pos[1])
+        de = 2
     elif press == "Left":
-        pos = (pos[0] - 10, pos[1])
-        if collisionMurs(pos) == True:
-            pos = (pos[0] + 10, pos[1])
+        de = 3
+    elif press == "Right":
+        de = 4
+    avancer, direction = avance(pos, de)
+    if avancer :
+        pos = (pos[0]+direction[0], pos[1]+direction[1])
+        canvas.coords(perso, pos[0], pos[1], pos[0]+40, pos[1]+40)
     elif press == "space":
         page = 4
         pausedPage = thirdPage()
-    #collisionMurs(perso)
-    canvas.coords(perso, pos[0], pos[1], pos[0]+40, pos[1]+40)
 
 #----------------------------------Collisions---------------------------------#
-def collisionMurs (pos):
-    global overlap
-    overlap = canvas.find_overlapping(pos[0], pos[1], pos[0] + 40, pos[1] + 40)
-    if len(overlap) >= 3:
-        print(overlap)
-        return True
-    else:
-        return False
-        
-#-----------------------------Ennemis------------------------------------------#
-def ennemis():
-    global posNmi
-    de = randint(1, 4)
-    distance = randint(1, 3)
-    x = (posNmi[0]-25)//50
-    y = (posNmi[1]-25)//50
+def avance(pos, de):
+    x = (pos[0]-25)//50
+    y = (pos[1]-25)//50
     avancer = True
 
     if de == 1:
@@ -105,20 +87,27 @@ def ennemis():
         if y == taille-1 or mursH[y][x] == 1:
             avancer = False
     if de == 3:
-        direction = (50, 0)
-        if x == taille-1 or mursV[y][x] == 1:
-            avancer = False
-    if de == 4:
         direction = (-50, 0)
         if x == 0 or mursV[y][x-1] == 1:
             avancer = False
+    if de == 4:
+        direction = (50, 0)
+        if x == taille-1 or mursV[y][x] == 1:
+            avancer = False
 
+    return avancer, direction
+        
+#-----------------------------Ennemis------------------------------------------#
+def ennemis():
+    global posNmi
+    de = randint(1, 4)
+    distance = randint(1, 3)
+    avancer, direction = avance(posNmi, de)
     if avancer:
         posNmi = (posNmi[0] + direction[0], posNmi[1] + direction[1])
         canvas.coords(Nmi, posNmi[0], posNmi[1], posNmi[0]+40, posNmi[1]+40)
     canvas.after(500, ennemis)
 
-        
 
 #-------------------------------------Pages-----------------------------------#
 def pageManagement(page):
@@ -232,6 +221,6 @@ def update():
 
 base()
 update()
-canvas.mainloop()
+fenetre.mainloop()
 
 
