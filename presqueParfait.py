@@ -371,22 +371,13 @@ def seventhPage():  # choix niveaux
 
 
 def eighthPage():
-    niveaux1 = canvas.create_text(310, 565, text="PERDU !",
+    perdu = canvas.create_text(310, 310, text="PERDU !",
                                   font="Arial 80", fill="LightGrey")
 
 
 # ----------------------Boucle principale----------------------- #
 
-"""
-def update():
-    global currentPage
-    if page != currentPage:
-        pageManagement(page)
-        currentPage = page
-    canvas.after(20, update)
-"""
 
 base()
 pageManagement(page)
-"""update()"""
 fenetre.mainloop()
