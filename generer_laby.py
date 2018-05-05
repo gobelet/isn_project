@@ -11,7 +11,7 @@ def initialisation(taille) :
     
     return lVoisins, etatsCases, mursVerticaux, mursHorizontaux 
                                     
-def trouverVoisins(etatsCases, taille, caseX, caseY) : #quand une nouvelle case est ajoutée, cette fonction ajoute à la liste de voisins les voisins de cette case 
+def trouverVoisins(etatsCases, taille, caseX, caseY) : #quand une nouvelle case est ajoutée, cette fonction aujoute à la liste de voisins les voisins de cette case 
     global lVoisins
 
     if caseX+1 < taille and etatsCases[caseY][caseX + 1] == " " : 
@@ -83,9 +83,9 @@ def enleverMur(direction, y, x) :
     elif direction == "N" :
         mursH[y-1][x] = 0
     elif direction == "E" :
-        mursV[x][y] = 0
+        mursV[y][x] = 0
     elif direction == "O" :
-        mursV[x-1][y] = 0
+        mursV[y][x-1] = 0
 
 def generer(taille, etatsCases) :
     global lVoisins
@@ -100,11 +100,26 @@ def generer(taille, etatsCases) :
         enleverMur(direction, y, x)
         trouverVoisins(etatsCases, taille, x, y)
 
-taille = int(input())
-lVoisins, etatsCases, mursV, mursH = initialisation(taille)
-etatsCases = generer(taille, etatsCases)
-print(mursH)
-print(mursV)
+def niveauChoisi(niveau):	
+	if niveau == 1:
+		taille = 15
+	if niveau == 2:
+		taille = 25
+	if niveau == 3:
+		taille = 30
+	if niveau == 4:
+		taille = 40
+	return taille
+
+def fabriqueLaby(niveau):
+	global taille
+	global cote
+	global lVoisins, etatsCases, mursV, mursH
+	taille = niveauChoisi(niveau)
+	cote = 600//taille
+	lVoisins, etatsCases, mursV, mursH = initialisation(taille)
+	etatsCases = generer(taille, etatsCases)
+	return taille, cote, mursH, mursV
 
 """
 partir de la case en haut à gauche
@@ -114,4 +129,3 @@ boum il devient chemin --> il faut enlever un mur
 on reactualise les voisins
 (si 2 cases du chemin adjacentes à 'voisin' : on en end une au îf, et du coup le chemin se fait entre ces deux cases)
 """
-
