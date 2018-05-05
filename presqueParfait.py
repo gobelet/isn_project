@@ -3,11 +3,11 @@ from generer_laby import *
 import generer_laby
 
 # -----------------------Initialisation----------------------- #
+
+
 fenetre = Tk()
 page = 1
-currentPage = 0
 attraper = 0
-
 
 
 def base():  # Interface Base
@@ -17,50 +17,15 @@ def base():  # Interface Base
     pageManagement(page)
     canvas.mainloop()
 
+
 def presentation():
     fond = canvas.create_rectangle(20, 20, 620, 620, fill="White")
 
 
-
-
-def clavier(event):
-    pageManagement(2)
-
-
-def clickRegles(event):
-    pageManagement(6)
-
-
-def clickNiveaux(event):
-    pageManagement(7)
-
-def deleteCanvas():
-    canvas.delete(*canvas.find_all())
-
-def auNiveau(n):
-    global niveau, taille, cote, mursH, mursV
-    niveau = n
-    taille, cote, mursH, mursV = fabriqueLaby(n)
-
-def niveau1(event):
-    auNiveau(1)
-
-def niveau2(event):
-    auNiveau(2)
-
-def niveau3(event):
-    auNiveau(3)
-
-def niveau4(event):
-    auNiveau(4)
-
-
-def clickContinuer(event):
-    pageManagement(3)
+# -----------------------Pages----------------------- #
 
 
 def pageManagement(page):
-    global changePage
     deleteCanvas()
     presentation()
 
@@ -84,9 +49,9 @@ def pageManagement(page):
 
 def firstPage():
     nomJeu = canvas.create_text(310, 250, text="Labyrinthe",
-                                  font="Arial 50 italic", fill="Grey")
+                                font="Arial 50 italic", fill="Grey")
     nosNoms = canvas.create_text(310, 330, text="Gwen & Mélo",
-                                  font="Arial 30", fill="LightSkyBlue1")
+                                 font="Arial 30", fill="LightSkyBlue1")
     commande = canvas.create_text(310, 420,
                                   text="Appuyer sur 'Entrée' pour continuer ",
                                   font="Arial 16", fill="Grey")
@@ -111,7 +76,8 @@ def secondPage():
 
     canvas.pack()
 
-def sixthPage():  # Règles
+
+def thirdPage():  # Règles
     header = canvas.create_text(320, 75, text="Règles",
                                 font="system 70 bold", fill="Grey")
 
@@ -165,7 +131,7 @@ ouvrir la porte",
     canvas.pack()
 
 
-def seventhPage():  # choix niveaux
+def fourthPage():  # choix niveaux
     global niveau
 
     choix = canvas.create_text(310, 120,
@@ -208,8 +174,7 @@ def seventhPage():  # choix niveaux
     canvas.pack()
 
 
-
-def fourthPage():
+def fifthPage():
     blocContinuer = canvas.create_rectangle(230, 235, 400, 280,
                                             fill="DeepSkyBlue2")
     blocRecommencer = canvas.create_rectangle(230, 315, 400, 365,
@@ -225,7 +190,48 @@ def fourthPage():
     canvas.pack()
 
 
-def fifthPage():
+def sixthPage():
+    # Affichage du labyrinthe
+    dessineMursH(mursH)
+    dessineMursV(mursV)
+
+    # Mouvement et affichage du bloc
+    global perso
+    global Nmi
+    global clef
+    global posPerso
+    global posNmi
+    global posClef
+    global posPorte
+
+    posPerso = (25, 25)
+    perso = canvas.create_rectangle(25, 25, cote+15, cote+15,
+                                    fill="DeepSkyBlue2")
+
+    posNmi = (randint(2, taille//2)*cote+25, randint(0, taille-1)*cote+25)
+    Nmi = canvas.create_rectangle(posNmi[0], posNmi[1],
+                                  posNmi[0]+cote-10, posNmi[1]+cote-10,
+                                  fill="Red")
+
+    clefAlea = (randint(1, 9), randint(0, 9))
+    posClef = (clefAlea[0] * cote + 25, clefAlea[1] * cote + 25)
+    clef = canvas.create_rectangle(posClef[0], posClef[1],
+                                   posClef[0] + cote-10, posClef[1] + cote//3,
+                                   fill="Gold")
+
+    posPorte = ((taille-1)*cote+30, (taille-1)*cote+24)
+    porte = canvas.create_rectangle(posPorte[0], posPorte[1],
+                                    posPorte[0]+cote//2, posPorte[1]+4*cote//5,
+                                    fill="Brown")
+
+    ennemis()
+
+    canvas.focus_set()
+    canvas.bind_all("<Key>", move)
+    canvas.pack()
+
+
+def seventhPage():
     felicitations = canvas.create_text(320, 250, text="Félicitations ! ",
                                        font="Arial 50 italic",
                                        fill="DeepSkyBlue2")
@@ -234,14 +240,13 @@ def fifthPage():
     canvas.pack()
 
 
-
-
 def eighthPage():
     perdu = canvas.create_text(310, 310, text="PERDU !",
                                font="Arial 80", fill="LightGrey")
 
 
 # -----------------------Fonctions Dessin----------------------- #
+
 
 def dessineMursH(mursH):
     for i in range(taille):
@@ -265,6 +270,50 @@ def dessineMursV(mursV):
 
 # -----------------------Fonctions Evenementiels----------------------- #
 
+def clavier(event):
+    pageManagement(2)
+
+
+def clickRegles(event):
+    pageManagement(3)
+
+
+def clickNiveaux(event):
+    pageManagement(4)
+
+
+def clickContinuer(event):
+    pageManagement(6)
+
+
+def deleteCanvas():
+    canvas.delete(*canvas.find_all())
+
+
+def auNiveau(n):
+    global niveau, taille, cote, mursH, mursV
+    niveau = n
+    taille, cote, mursH, mursV = fabriqueLaby(n)
+
+
+def niveau1(event):
+    auNiveau(1)
+
+
+def niveau2(event):
+    auNiveau(2)
+
+
+def niveau3(event):
+    auNiveau(3)
+
+
+def niveau4(event):
+    auNiveau(4)
+
+
+# -----------------------Personnages----------------------- #
+
 
 def move(event):
     global posPerso
@@ -274,8 +323,8 @@ def move(event):
     de = 0
 
     if press == "space":
-        pausedPage = thirdPage()
-        pageManagement(4)
+        pausedPage = fifthPage()
+        pageManagement(6)
     elif press == "Up":
         de = 1
     elif press == "Down":
@@ -289,9 +338,46 @@ def move(event):
 
     if avancer:
         posPerso = (posPerso[0]+direction[0], posPerso[1]+direction[1])
-        canvas.coords(perso, posPerso[0], posPerso[1], posPerso[0]+cote-10, posPerso[1]+cote-10)
+        canvas.coords(perso, posPerso[0], posPerso[1],
+                      posPerso[0]+cote-10, posPerso[1]+cote-10)
         perdre(posNmi, posPerso)
         gagner(posPerso, posClef, taille)
+
+
+def perdre(posNmi, pos):
+    if collisionObjet(pos, posNmi):
+        pageManagement(8)
+
+
+def gagner(pos, posClef, taille):
+    global attraper
+
+    if collisionObjet(pos, posClef):
+        attraper = 1
+        canvas.delete(clef)
+
+    if attraper == 1:
+        if collisionObjet(pos, ((taille-1)*cote+25, (taille-1)*cote+25)):
+            pageManagement(7)
+
+
+# -----------------------Ennemis----------------------- #
+
+
+def ennemis():
+    global posNmi
+    global posPerso
+    de = randint(1, 4)
+    avancer, direction = collisionMurs(posNmi, de)
+
+    if avancer:
+        posNmi = (posNmi[0] + direction[0], posNmi[1] + direction[1])
+        canvas.coords(Nmi, posNmi[0], posNmi[1],
+                      posNmi[0]+cote-10, posNmi[1]+cote-10)
+        perdre(posNmi, posPerso)
+
+    canvas.after(500, ennemis)
+
 
 # -----------------------Collisions----------------------- #
 
@@ -330,79 +416,6 @@ def collisionObjet(posPerso, posObjet):
 
     if persoX == objetX and persoY == objetY:
         return True
-
-
-# -----------------------Ennemis----------------------- #
-
-
-def ennemis():
-    global posNmi
-    global posPerso
-    de = randint(1, 4)
-    avancer, direction = collisionMurs(posNmi, de)
-
-    if avancer:
-        posNmi = (posNmi[0] + direction[0], posNmi[1] + direction[1])
-        canvas.coords(Nmi, posNmi[0], posNmi[1], posNmi[0]+cote-10, posNmi[1]+cote-10)
-        perdre(posNmi, posPerso)
-
-    canvas.after(500, ennemis)
-
-
-def perdre(posNmi, pos):
-    if collisionObjet(pos, posNmi):
-        pageManagement(8)
-
-
-def gagner(pos, posClef, taille):
-    global attraper
-
-    if collisionObjet(pos, posClef):
-        attraper = 1
-        canvas.delete(clef)
-
-    if attraper == 1:
-        if collisionObjet(pos, ((taille-1)*cote+25, (taille-1)*cote+25)):
-            pageManagement(5)
-
-
-# -----------------------Pages----------------------- #
-
-def thirdPage():
-    # Affichage du labyrinthe
-    dessineMursH(mursH)
-    dessineMursV(mursV)
-
-    # Mouvement et affichage du bloc
-    global perso
-    global Nmi
-    global clef
-    global posPerso
-    global posNmi
-    global posClef
-    global posPorte
-
-    posPerso = (25, 25)
-    perso = canvas.create_rectangle(25, 25, 15+cote, cote+15, fill="DeepSkyBlue2")
-
-    posNmi = (randint(2, taille//2)*cote+25, randint(0, taille-1)*cote+25)
-    Nmi = canvas.create_rectangle(posNmi[0], posNmi[1], posNmi[0]+cote-10, posNmi[1]+cote-10, fill="Red")
-
-    clefAlea = (randint(1, 9), randint(0, 9))
-    posClef = (clefAlea[0] * cote + 25, clefAlea[1] * cote + 25)
-    clef = canvas.create_rectangle(posClef[0], posClef[1],
-                                   posClef[0] + cote-10, posClef[1] + cote//3,
-                                   fill="Gold")
-
-    posPorte = ((taille-1)*cote+30, (taille-1)*cote+24)
-    porte = canvas.create_rectangle(posPorte[0], posPorte[1], posPorte[0]+cote//2, posPorte[1]+4*cote//5, fill="Brown")
-
-    ennemis()
-
-    canvas.focus_set()
-    canvas.bind_all("<Key>", move)
-    canvas.pack()
-
 
 
 # ----------------------Boucle principale----------------------- #
