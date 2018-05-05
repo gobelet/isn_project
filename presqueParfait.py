@@ -10,7 +10,8 @@ page = 1
 attraper = 0
 
 
-def base():  # Interface Base
+# Base de l'interface
+def base():
     global canvas
     canvas = Canvas(fenetre, width=640, height=640, background="LightSkyBlue1")
     presentation()
@@ -18,6 +19,7 @@ def base():  # Interface Base
     canvas.mainloop()
 
 
+# Crée le fond blanc de l'interface
 def presentation():
     fond = canvas.create_rectangle(20, 20, 620, 620, fill="White")
 
@@ -25,29 +27,31 @@ def presentation():
 # -----------------------Pages----------------------- #
 
 
+# Permet de changer de page
 def pageManagement(page):
     deleteCanvas()
     presentation()
 
     if page == 1:
-        firstPage()
+        pageUne()
     if page == 2:
-        secondPage()
+        pageDeux()
     if page == 3:
-        thirdPage()
+        pageTrois()
     if page == 4:
-        fourthPage()
+        pageQuatre()
     if page == 5:
-        fifthPage()
+        pageCinq()
     if page == 6:
-        sixthPage()
+        pageSix()
     if page == 7:
-        seventhPage()
+        pageSept()
     if page == 8:
-        eighthPage()
+        pageHuit()
 
 
-def firstPage():
+# Page de présentation
+def pageUne():
     nomJeu = canvas.create_text(310, 250, text="Labyrinthe",
                                 font="Arial 50 italic", fill="Grey")
     nosNoms = canvas.create_text(310, 330, text="Gwen & Mélo",
@@ -59,7 +63,8 @@ def firstPage():
     canvas.pack()
 
 
-def secondPage():
+# Page permettant d'accéder aux règles et aux niveaux
+def pageDeux():
     blocRegles = canvas.create_rectangle(230, 235, 400, 285,
                                          fill="DeepSkyBlue2")
     blocNiveaux = canvas.create_rectangle(230, 315, 400, 365,
@@ -77,17 +82,18 @@ def secondPage():
     canvas.pack()
 
 
-def thirdPage():  # Règles
+# Règles
+def pageTrois():
     header = canvas.create_text(320, 75, text="Règles",
                                 font="system 70 bold", fill="Grey")
 
     but = canvas.create_text(100, 150, text="But du jeu:",
                              font="Arial 20 underline", fill="LightSkyBlue1")
-    firstPoint = canvas.create_text(230, 190,
+    point1 = canvas.create_text(230, 190,
                                     text="* Aller jusqu'à la porte en bas à \
 droite.",
                                     font="Arial 18", fill="LightGrey")
-    secondPoint = canvas.create_text(263, 220,
+    point2 = canvas.create_text(263, 220,
                                      text="* Récupérer la(-es) clé(s) pour \
 ouvrir la porte",
                                      font="Arial 18", fill="LightGrey")
@@ -104,20 +110,20 @@ ouvrir la porte",
     comment = canvas.create_text(128, 290, text="Comment jouer:",
                                  font="Arial 20 underline",
                                  fill="LightSkyBlue1")
-    thirdPoint = canvas.create_text(252, 330,
+    point3 = canvas.create_text(252, 330,
                                     text="* Se déplacer grâce aux flèches du \
  clavier ",
                                     font="Arial 18", fill="LightGrey")
     autres = canvas.create_text(75, 370, text="Autres:",
                                 font="Arial 20 underline",
                                 fill="LightSkyBlue1")
-    fourthPoint = canvas.create_text(161, 410,
+    point4 = canvas.create_text(161, 410,
                                      text="* Il faut éviter les ennemis",
                                      font="Arial 18", fill="LightGrey")
-    fifthPoint = canvas.create_text(193, 440,
+    point5 = canvas.create_text(193, 440,
                                     text="* Espace permet de faire Pause",
                                     font="Arial 18", fill="LightGrey")
-    finalPoint = canvas.create_text(310, 500,
+    point6 = canvas.create_text(310, 500,
                                     text="Choisir niveau pour commencer le \
  jeu !",
                                     font="Arial 20", fill="Grey")
@@ -131,7 +137,8 @@ ouvrir la porte",
     canvas.pack()
 
 
-def fourthPage():  # choix niveaux
+# Choix des niveaux
+def pageQuatre():
     global niveau
 
     choix = canvas.create_text(310, 120,
@@ -174,7 +181,8 @@ def fourthPage():  # choix niveaux
     canvas.pack()
 
 
-def fifthPage():
+# Page de pause; inutilisée ici
+def pageCinq():
     blocContinuer = canvas.create_rectangle(230, 235, 400, 280,
                                             fill="DeepSkyBlue2")
     blocRecommencer = canvas.create_rectangle(230, 315, 400, 365,
@@ -190,7 +198,8 @@ def fifthPage():
     canvas.pack()
 
 
-def sixthPage():
+# Jeu en lui-même
+def pageSix():
     # Affichage du labyrinthe
     dessineMursH(mursH)
     dessineMursV(mursV)
@@ -231,7 +240,8 @@ def sixthPage():
     canvas.pack()
 
 
-def seventhPage():
+# Page de fin en cas de victoire
+def pageSept():
     felicitations = canvas.create_text(320, 250, text="Félicitations ! ",
                                        font="Arial 50 italic",
                                        fill="DeepSkyBlue2")
@@ -240,7 +250,8 @@ def seventhPage():
     canvas.pack()
 
 
-def eighthPage():
+# Page de fin en cas de défaite
+def pageHuit():
     perdu = canvas.create_text(310, 310, text="PERDU !",
                                font="Arial 80", fill="LightGrey")
 
@@ -248,6 +259,7 @@ def eighthPage():
 # -----------------------Fonctions Dessin----------------------- #
 
 
+# Affiche les murs horizontaux
 def dessineMursH(mursH):
     for i in range(taille):
         for j in range(taille):
@@ -258,6 +270,7 @@ def dessineMursH(mursH):
     bord = canvas.create_rectangle(20, 20, 620, 20, fill="Grey")
 
 
+#Affiche les murs verticaux
 def dessineMursV(mursV):
     for i in range(taille):
         for j in range(taille):
@@ -270,6 +283,8 @@ def dessineMursV(mursV):
 
 # -----------------------Fonctions Evenementiels----------------------- #
 
+
+# Les fonctions suivantes appellent pageMangament() pour changer de page
 def clavier(event):
     pageManagement(2)
 
@@ -286,10 +301,12 @@ def clickContinuer(event):
     pageManagement(6)
 
 
+# Cette fonction efface tout ce qu'il y a sur la page avant de changer de page
 def deleteCanvas():
     canvas.delete(*canvas.find_all())
 
 
+# Les focntions suivantes sont liées au choix du niveau
 def auNiveau(n):
     global niveau, taille, cote, mursH, mursV
     niveau = n
@@ -315,6 +332,7 @@ def niveau4(event):
 # -----------------------Personnages----------------------- #
 
 
+# Gère les mouvements du personnage
 def move(event):
     global posPerso
     global posNmi
@@ -323,7 +341,7 @@ def move(event):
     de = 0
 
     if press == "space":
-        pausedPage = fifthPage()
+        pausedPage = pageCinq()
         pageManagement(6)
     elif press == "Up":
         de = 1
@@ -344,11 +362,13 @@ def move(event):
         gagner(posPerso, posClef, taille)
 
 
+# Gère les défaites (= collision entre ennemi et personnage)
 def perdre(posNmi, pos):
     if collisionObjet(pos, posNmi):
         pageManagement(8)
 
 
+# Gère les victoires (= personnage arrivé en bas à droite du labyrinthe)
 def gagner(pos, posClef, taille):
     global attraper
 
@@ -364,6 +384,7 @@ def gagner(pos, posClef, taille):
 # -----------------------Ennemis----------------------- #
 
 
+# Gère les mouvements du(des) ennemi(s)
 def ennemis():
     global posNmi
     global posPerso
@@ -382,6 +403,7 @@ def ennemis():
 # -----------------------Collisions----------------------- #
 
 
+# Détecte les collisions entre les murs et le personnage
 def collisionMurs(pos, de):
     x = (pos[0] - 25) // cote
     y = (pos[1] - 25) // cote
@@ -408,6 +430,7 @@ def collisionMurs(pos, de):
     return avancer, direction
 
 
+# Détecte les collisions entre le personnage et un autre objet
 def collisionObjet(posPerso, posObjet):
     persoX = (posPerso[0] - 25) // cote
     persoY = (posPerso[1] - 25) // cote
