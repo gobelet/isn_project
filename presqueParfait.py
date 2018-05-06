@@ -90,13 +90,13 @@ def pageTrois():
     but = canvas.create_text(100, 150, text="But du jeu:",
                              font="Arial 20 underline", fill="LightSkyBlue1")
     point1 = canvas.create_text(230, 190,
-                                    text="* Aller jusqu'à la porte en bas à \
+                                text="* Aller jusqu'à la porte en bas à \
 droite.",
-                                    font="Arial 18", fill="LightGrey")
+                                font="Arial 18", fill="LightGrey")
     point2 = canvas.create_text(263, 220,
-                                     text="* Récupérer la(-es) clé(s) pour \
+                                text="* Récupérer la(-es) clé(s) pour \
 ouvrir la porte",
-                                     font="Arial 18", fill="LightGrey")
+                                font="Arial 18", fill="LightGrey")
     presentationPerso = canvas.create_text(297, 250,
                                            text="* Perso =          Ennemi =  \
         Clé =          Porte =",
@@ -111,23 +111,23 @@ ouvrir la porte",
                                  font="Arial 20 underline",
                                  fill="LightSkyBlue1")
     point3 = canvas.create_text(255, 330,
-                                    text="* Se déplacer grâce aux flèches du \
+                                text="* Se déplacer grâce aux flèches du \
  clavier ",
-                                    font="Arial 18", fill="LightGrey")
+                                font="Arial 18", fill="LightGrey")
     autres = canvas.create_text(75, 370, text="Autres:",
                                 font="Arial 20 underline",
                                 fill="LightSkyBlue1")
     point4 = canvas.create_text(161, 410,
-                                     text="* Il faut éviter les ennemis",
-                                     font="Arial 18", fill="LightGrey")
+                                text="* Il faut éviter les ennemis",
+                                font="Arial 18", fill="LightGrey")
     point5 = canvas.create_text(318, 440,
-                                    text="* À tout moment appuyer sur entrée \
+                                text="* À tout moment appuyer sur entrée \
 pour recommencer",
-                                    font="Arial 18", fill="LightGrey")
+                                font="Arial 18", fill="LightGrey")
     point6 = canvas.create_text(310, 500,
-                                    text="Choisir niveau pour commencer le \
+                                text="Choisir niveau pour commencer le \
  jeu !",
-                                    font="Arial 20", fill="Grey")
+                                font="Arial 20", fill="Grey")
     blocNiveaux = canvas.create_rectangle(230, 540, 400, 590,
                                           fill="DeepSkyBlue2")
     niveaux = canvas.create_text(310, 565, text="Niveaux",
@@ -223,27 +223,30 @@ def pageSix():
     Nmis = []
     posNmi = []
     for n in range(niveau):
-        nmiAlea = (randint(taille*n//niveau + 2, taille*(n+1)//niveau -1), randint(0, taille-1))
-        posNmi.append([nmiAlea[0]*cote+25, nmiAlea[1]*cote+25])
+        NmiAlea = (randint(taille*n//niveau+2, taille*(n+1)//niveau-1),
+                   randint(0, taille-1))
+        posNmi.append([NmiAlea[0]*cote+25, NmiAlea[1]*cote+25])
         Nmis.append(canvas.create_rectangle(posNmi[n][0], posNmi[n][1],
-                                  posNmi[n][0]+cote-10, posNmi[n][1]+cote-10,
-                                  fill="Red"))
+                                            posNmi[n][0]+cote-10,
+                                            posNmi[n][1]+cote-10,
+                                            fill="Red"))
         ennemis(n)
 
     posClef = []
     clefs = []
     for n in range(niveau):
-        clefAlea = (randint(0, taille-1), randint(taille*n//niveau + 2, taille*(n+1)//niveau -1))
-        posClef.append([clefAlea[0] * cote + 25, clefAlea[1] * cote + 25])
+        clefAlea = (randint(0, taille-1),
+                    randint(taille*n//niveau+2, taille*(n+1)//niveau-1))
+        posClef.append([clefAlea[0]*cote+25, clefAlea[1]*cote+25])
         clefs.append(canvas.create_rectangle(posClef[n][0], posClef[n][1],
-                                       posClef[n][0] + cote-10, posClef[n][1] + cote//3,
-                                       fill="Gold"))
+                                             posClef[n][0] + cote-10,
+                                             posClef[n][1] + cote//3,
+                                             fill="Gold"))
 
     posPorte = ((taille-1)*cote+30, (taille-1)*cote+24)
     porte = canvas.create_rectangle(posPorte[0], posPorte[1],
                                     posPorte[0]+cote//2, posPorte[1]+4*cote//5,
                                     fill="Brown")
-
 
     canvas.focus_set()
     canvas.bind_all("<Key>", move)
@@ -258,7 +261,7 @@ def pageSept():
     message = canvas.create_text(320, 400, text="Vous Avez Gagné",
                                  font="Arial 50 italic", fill="Grey")
     commande = canvas.create_text(310, 580,
-                                  text="Appuyer sur 'Entrée' pour recommencer ",
+                                  text="Appuyer sur 'Entrée' pour recommencer",
                                   font="Arial 20", fill="Cyan2")
     canvas.pack()
 
@@ -268,7 +271,7 @@ def pageHuit():
     perdu = canvas.create_text(310, 310, text="PERDU !",
                                font="Arial 80", fill="LightGrey")
     commande = canvas.create_text(310, 580,
-                                  text="Appuyer sur 'Entrée' pour recommencer ",
+                                  text="Appuyer sur 'Entrée' pour recommencer",
                                   font="Arial 20", fill="Cyan2")
 
 
@@ -286,7 +289,7 @@ def dessineMursH(mursH):
     bord = canvas.create_rectangle(20, 20, 620, 20, fill="Grey")
 
 
-#Affiche les murs verticaux
+# Affiche les murs verticaux
 def dessineMursV(mursV):
     for i in range(taille):
         for j in range(taille):
@@ -335,7 +338,7 @@ def niveau1(event):
     canvas.itemconfig(blocNiveau3, fill='DeepSkyBlue2')
     canvas.itemconfig(blocNiveau4, fill='DeepSkyBlue2')
     auNiveau(1)
-    
+
 
 def niveau2(event):
     canvas.itemconfig(blocNiveau1, fill='DeepSkyBlue2')
@@ -343,15 +346,15 @@ def niveau2(event):
     canvas.itemconfig(blocNiveau3, fill='DeepSkyBlue2')
     canvas.itemconfig(blocNiveau4, fill='DeepSkyBlue2')
     auNiveau(2)
-    
+
 
 def niveau3(event):
     canvas.itemconfig(blocNiveau1, fill='DeepSkyBlue2')
     canvas.itemconfig(blocNiveau2, fill='DeepSkyBlue2')
     canvas.itemconfig(blocNiveau3, fill='cyan2')
-    canvas.itemconfig(blocNiveau4, fill='DeepSkyBlue2')    
+    canvas.itemconfig(blocNiveau4, fill='DeepSkyBlue2')
     auNiveau(3)
-    
+
 
 def niveau4(event):
     canvas.itemconfig(blocNiveau1, fill='DeepSkyBlue2')
@@ -359,7 +362,6 @@ def niveau4(event):
     canvas.itemconfig(blocNiveau3, fill='DeepSkyBlue2')
     canvas.itemconfig(blocNiveau4, fill='cyan2')
     auNiveau(4)
-    
 
 
 # -----------------------Personnages----------------------- #
@@ -391,7 +393,7 @@ def move(event):
         posPerso = (posPerso[0]+direction[0], posPerso[1]+direction[1])
         canvas.coords(perso, posPerso[0], posPerso[1],
                       posPerso[0]+cote-10, posPerso[1]+cote-10)
-        for n in range(niveau):        
+        for n in range(niveau):
             perdre(posNmi[n], posPerso)
         for n in range(niveau):
             gagner(posPerso, posClef[n], clefs[n], taille)
