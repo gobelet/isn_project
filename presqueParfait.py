@@ -416,7 +416,6 @@ def gagner(pos, posClef, clef, taille):
         canvas.delete(clef)
 
     if attraper == niveau:
-        print(niveau)
         if collisionObjet(pos, ((taille-1)*cote+25, (taille-1)*cote+25)):
             pageManagement(7)
 
