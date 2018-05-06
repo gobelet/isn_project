@@ -110,7 +110,7 @@ ouvrir la porte",
     comment = canvas.create_text(128, 290, text="Comment jouer:",
                                  font="Arial 20 underline",
                                  fill="LightSkyBlue1")
-    point3 = canvas.create_text(252, 330,
+    point3 = canvas.create_text(255, 330,
                                     text="* Se déplacer grâce aux flèches du \
  clavier ",
                                     font="Arial 18", fill="LightGrey")
@@ -120,8 +120,9 @@ ouvrir la porte",
     point4 = canvas.create_text(161, 410,
                                      text="* Il faut éviter les ennemis",
                                      font="Arial 18", fill="LightGrey")
-    point5 = canvas.create_text(193, 440,
-                                    text="* Espace permet de faire Pause",
+    point5 = canvas.create_text(318, 440,
+                                    text="* À tout moment appuyer sur entrée \
+pour recommencer",
                                     font="Arial 18", fill="LightGrey")
     point6 = canvas.create_text(310, 500,
                                     text="Choisir niveau pour commencer le \
@@ -139,7 +140,10 @@ ouvrir la porte",
 
 # Choix des niveaux
 def pageQuatre():
-    global niveau
+    global blocNiveau1
+    global blocNiveau2
+    global blocNiveau3
+    global blocNiveau4
 
     choix = canvas.create_text(310, 120,
                                text="Choisir un niveau pour commencer le \
@@ -247,6 +251,9 @@ def pageSept():
                                        fill="DeepSkyBlue2")
     message = canvas.create_text(320, 400, text="Vous Avez Gagné",
                                  font="Arial 50 italic", fill="Grey")
+    commande = canvas.create_text(310, 580,
+                                  text="Appuyer sur 'Entrée' pour recommencer ",
+                                  font="Arial 20", fill="Cyan2")
     canvas.pack()
 
 
@@ -254,6 +261,9 @@ def pageSept():
 def pageHuit():
     perdu = canvas.create_text(310, 310, text="PERDU !",
                                font="Arial 80", fill="LightGrey")
+    commande = canvas.create_text(310, 580,
+                                  text="Appuyer sur 'Entrée' pour recommencer ",
+                                  font="Arial 20", fill="Cyan2")
 
 
 # -----------------------Fonctions Dessin----------------------- #
@@ -314,19 +324,36 @@ def auNiveau(n):
 
 
 def niveau1(event):
+    canvas.itemconfig(blocNiveau1, fill='cyan2')
+    canvas.itemconfig(blocNiveau2, fill='DeepSkyBlue2')
+    canvas.itemconfig(blocNiveau3, fill='DeepSkyBlue2')
+    canvas.itemconfig(blocNiveau4, fill='DeepSkyBlue2')
     auNiveau(1)
-
+    
 
 def niveau2(event):
+    canvas.itemconfig(blocNiveau1, fill='DeepSkyBlue2')
+    canvas.itemconfig(blocNiveau2, fill='cyan2')
+    canvas.itemconfig(blocNiveau3, fill='DeepSkyBlue2')
+    canvas.itemconfig(blocNiveau4, fill='DeepSkyBlue2')
     auNiveau(2)
-
+    
 
 def niveau3(event):
+    canvas.itemconfig(blocNiveau1, fill='DeepSkyBlue2')
+    canvas.itemconfig(blocNiveau2, fill='DeepSkyBlue2')
+    canvas.itemconfig(blocNiveau3, fill='cyan2')
+    canvas.itemconfig(blocNiveau4, fill='DeepSkyBlue2')    
     auNiveau(3)
-
+    
 
 def niveau4(event):
+    canvas.itemconfig(blocNiveau1, fill='DeepSkyBlue2')
+    canvas.itemconfig(blocNiveau2, fill='DeepSkyBlue2')
+    canvas.itemconfig(blocNiveau3, fill='DeepSkyBlue2')
+    canvas.itemconfig(blocNiveau4, fill='cyan2')
     auNiveau(4)
+    
 
 
 # -----------------------Personnages----------------------- #
