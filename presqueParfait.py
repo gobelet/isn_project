@@ -406,12 +406,12 @@ def perdre(posNmi, pos):
 
 
 # Gère les victoires (= personnage arrivé en bas à droite du labyrinthe)
-def gagner(pos, posClef, taille):
+def gagner(pos, posClef, clef, taille):
     global attraper
 
     if collisionObjet(pos, posClef):
         attraper += 1
-        canvas.delete(clefs[n])
+        canvas.delete(clef)
 
     if attraper == niveau:
         if collisionObjet(pos, ((taille-1)*cote+25, (taille-1)*cote+25)):
