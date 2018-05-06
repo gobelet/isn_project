@@ -7,7 +7,6 @@ import generer_laby
 
 fenetre = Tk()
 page = 1
-attraper = 0
 
 
 # Base de l'interface
@@ -65,6 +64,8 @@ def pageUne():
 
 # Page permettant d'accéder aux règles et aux niveaux
 def pageDeux():
+    global attraper
+    attraper = 0
     blocRegles = canvas.create_rectangle(230, 235, 400, 285,
                                          fill="DeepSkyBlue2")
     blocNiveaux = canvas.create_rectangle(230, 315, 400, 365,
@@ -220,6 +221,7 @@ def pageSix():
     posPerso = (25, 25)
     perso = canvas.create_rectangle(25, 25, cote+15, cote+15,
                                     fill="DeepSkyBlue2")
+
     Nmis = []
     posNmi = []
     for n in range(niveau):
@@ -414,6 +416,7 @@ def gagner(pos, posClef, clef, taille):
         canvas.delete(clef)
 
     if attraper == niveau:
+        print(niveau)
         if collisionObjet(pos, ((taille-1)*cote+25, (taille-1)*cote+25)):
             pageManagement(7)
 
