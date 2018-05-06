@@ -74,7 +74,7 @@ def nbCheminVoisin(etatsCases, y, x):
 
 # Choisit une case appartenant déjà au labyrinthe et qui est voisine à la case
 # sélectionnée et enlève le mur entre les deux
-def Creerchemin(y, x, lTotalVoisins, totalVoisins):
+def creerChemin(y, x, lTotalVoisins, totalVoisins):
     global mursV
     global mursH
 
@@ -102,7 +102,7 @@ def generer(taille, etatsCases):
         y, x = voisinHasard()
         etatsCases[y][x] = "."
         totVois, lTotVois = nbCheminVoisin(etatsCases, y, x)
-        Creerchemin(y, x, lTotVois, totVois)
+        creerChemin(y, x, lTotVois, totVois)
         trouverVoisins(etatsCases, taille, x, y)
 
 
