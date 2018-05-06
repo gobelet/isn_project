@@ -104,11 +104,11 @@ def niveauChoisi(niveau):
 	if niveau == 1:
 		taille = 15
 	if niveau == 2:
-		taille = 25
+		taille = 20
 	if niveau == 3:
-		taille = 30
+		taille = 25
 	if niveau == 4:
-		taille = 40
+		taille = 30
 	return taille
 
 def fabriqueLaby(niveau):
