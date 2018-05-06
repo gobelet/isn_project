@@ -210,8 +210,8 @@ def pageSix():
 
     # Mouvement et affichage du bloc
     global perso
-    global Nmi
-    global clef
+    global Nmis
+    global clefs
     global posPerso
     global posNmi
     global posClef
@@ -220,24 +220,30 @@ def pageSix():
     posPerso = (25, 25)
     perso = canvas.create_rectangle(25, 25, cote+15, cote+15,
                                     fill="DeepSkyBlue2")
+    Nmis = []
+    posNmi = []
+    for n in range(niveau):
+        nmiAlea = (randint(taille*n//niveau + 2, taille*(n+1)//niveau -1), randint(0, taille-1))
+        posNmi.append([nmiAlea[0]*cote+25, nmiAlea[1]*cote+25])
+        Nmis.append(canvas.create_rectangle(posNmi[n][0], posNmi[n][1],
+                                  posNmi[n][0]+cote-10, posNmi[n][1]+cote-10,
+                                  fill="Red"))
+        ennemis(n)
 
-    posNmi = (randint(2, taille//2)*cote+25, randint(0, taille-1)*cote+25)
-    Nmi = canvas.create_rectangle(posNmi[0], posNmi[1],
-                                  posNmi[0]+cote-10, posNmi[1]+cote-10,
-                                  fill="Red")
-
-    clefAlea = (randint(1, 9), randint(0, 9))
-    posClef = (clefAlea[0] * cote + 25, clefAlea[1] * cote + 25)
-    clef = canvas.create_rectangle(posClef[0], posClef[1],
-                                   posClef[0] + cote-10, posClef[1] + cote//3,
-                                   fill="Gold")
+    posClef = []
+    clefs = []
+    for n in range(niveau):
+        clefAlea = (randint(0, taille-1), randint(taille*n//niveau + 2, taille*(n+1)//niveau -1))
+        posClef.append([clefAlea[0] * cote + 25, clefAlea[1] * cote + 25])
+        clefs.append(canvas.create_rectangle(posClef[n][0], posClef[n][1],
+                                       posClef[n][0] + cote-10, posClef[n][1] + cote//3,
+                                       fill="Gold"))
 
     posPorte = ((taille-1)*cote+30, (taille-1)*cote+24)
     porte = canvas.create_rectangle(posPorte[0], posPorte[1],
                                     posPorte[0]+cote//2, posPorte[1]+4*cote//5,
                                     fill="Brown")
 
-    ennemis()
 
     canvas.focus_set()
     canvas.bind_all("<Key>", move)
@@ -385,8 +391,10 @@ def move(event):
         posPerso = (posPerso[0]+direction[0], posPerso[1]+direction[1])
         canvas.coords(perso, posPerso[0], posPerso[1],
                       posPerso[0]+cote-10, posPerso[1]+cote-10)
-        perdre(posNmi, posPerso)
-        gagner(posPerso, posClef, taille)
+        for n in range(niveau):        
+            perdre(posNmi[n], posPerso)
+        for n in range(niveau):
+            gagner(posPerso, posClef[n], clefs[n], taille)
 
 
 # Gère les défaites (= collision entre ennemi et personnage)
@@ -400,10 +408,10 @@ def gagner(pos, posClef, taille):
     global attraper
 
     if collisionObjet(pos, posClef):
-        attraper = 1
-        canvas.delete(clef)
+        attraper += 1
+        canvas.delete(clefs[n])
 
-    if attraper == 1:
+    if attraper == niveau:
         if collisionObjet(pos, ((taille-1)*cote+25, (taille-1)*cote+25)):
             pageManagement(7)
 
@@ -412,19 +420,19 @@ def gagner(pos, posClef, taille):
 
 
 # Gère les mouvements du(des) ennemi(s)
-def ennemis():
+def ennemis(n):
     global posNmi
     global posPerso
     de = randint(1, 4)
-    avancer, direction = collisionMurs(posNmi, de)
+    avancer, direction = collisionMurs(posNmi[n], de)
 
     if avancer:
-        posNmi = (posNmi[0] + direction[0], posNmi[1] + direction[1])
-        canvas.coords(Nmi, posNmi[0], posNmi[1],
-                      posNmi[0]+cote-10, posNmi[1]+cote-10)
-        perdre(posNmi, posPerso)
+        posNmi[n] = (posNmi[n][0] + direction[0], posNmi[n][1] + direction[1])
+        canvas.coords(Nmis[n], posNmi[n][0], posNmi[n][1],
+                      posNmi[n][0]+cote-10, posNmi[n][1]+cote-10)
+        perdre(posNmi[n], posPerso)
 
-    canvas.after(500, ennemis)
+    canvas.after(500, ennemis, n)
 
 
 # -----------------------Collisions----------------------- #
